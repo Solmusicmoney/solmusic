@@ -1,0 +1,5 @@
+- change auth to Google
+- create Player component with managed functionality
+- creat Rewards class to share token reward
+- create Miner component to keep track of users listening time
+- Connect wallet to app
