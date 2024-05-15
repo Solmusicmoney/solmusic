@@ -1,9 +1,8 @@
 import MusicPlayer, { PlayerRef } from "@/components/MusicPlayer";
 import { NextPage, NextPageContext } from "next";
 import { useEffect, useRef, useState } from "react";
-import ReactPlayer from "react-player";
-
-// artist data. Refactor
+import songs from "@/lib/songs";
+import { ping } from "@/lib/solana/ping-program";
 
 const Home: NextPage = function () {
   const [loaded, setLoaded] = useState(false);
@@ -13,7 +12,7 @@ const Home: NextPage = function () {
 
   return (
     <>
-      <MusicPlayer ref={ref} />
+      <MusicPlayer ref={ref} songs={songs} />
     </>
   );
 };
@@ -28,6 +27,7 @@ export async function getServerSideProps(context: NextPageContext) {
       },
     };
   } */
+  ping();
   return { props: {} };
 }
 

@@ -42,7 +42,7 @@ async function transfer(pubkey: PublicKey, lamports: number) {
 
   console.log(`Instruction added to send ${lamports} lamports to ${pubkey}`);
 
-  transaction.sign(keypair);
+  //transaction.sign(keypair);
 
   console.log(`Transaction signed by authority`);
 
@@ -58,6 +58,8 @@ async function transfer(pubkey: PublicKey, lamports: number) {
   console.log(
     `You can view your transaction on Solana Explorer at:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`
   );
+
+  return signature;
 }
 
 // Example (runs from cli)

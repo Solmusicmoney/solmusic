@@ -13,8 +13,11 @@ import picantoImage from "@/assets/odumodublvck/picanto.jpg";
 import calmdownImage from "@/assets/rema/calm down selena gomez.jpg";
 import Image from "next/image";
 
+import logo from "@/assets/logo.svg";
+
 type PlayerProps = {
   ref: any;
+  songs: any[];
 };
 
 export type PlayerRef = {
@@ -44,20 +47,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
       width: "100%",
       height: "100%",
     });
-    const [tracks, setTracks] = useState([
-      {
-        url: "http://localhost:8080/songs/PICANTO.mp3",
-        art_cover: picantoImage.src,
-        title: "PICANTO (feat. Zlatan and ECko Miles)",
-        artist: "ODUMODUBLVCK",
-      },
-      {
-        url: `http://localhost:8080/songs/Rema, Selena Gomez - Calm Down.mp3`,
-        art_cover: calmdownImage.src,
-        title: "Calm Down (feat. Selena Gomez)",
-        artist: "Rema",
-      },
-    ]);
+    const [tracks, setTracks] = useState(props.songs);
 
     const [currentTrackIndex, setCurrTrackIndex] = useState(0);
 
@@ -83,6 +73,10 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
       setPlayerState({ ...playerState, url: currentTrack.url });
     }, [currentTrack]);
 
+    useEffect(() => {
+      setCurrentTrack(tracks[currentTrackIndex]);
+    }, [currentTrackIndex]);
+
     const handleStop = () => {
       setPlayerState({ ...playerState, url: "", playing: false });
     };
@@ -102,8 +96,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         setCurrTrackIndex(0);
       }
 
-      setPlayerState({ ...playerState, played: 0, loaded: 0 });
-      setCurrentTrack(tracks[currentTrackIndex]);
+      setPlayerState({ ...playerState, playing: true, played: 0, loaded: 0 });
     };
 
     const playPrevTrack = () => {
@@ -113,8 +106,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         setCurrTrackIndex(tracks.length - 1);
       }
 
-      setPlayerState({ ...playerState, played: 0, loaded: 0 });
-      setCurrentTrack(tracks[currentTrackIndex]);
+      setPlayerState({ ...playerState, playing: true, played: 0, loaded: 0 });
     };
 
     const handleSeekMouseDown = (e: any) => {
@@ -126,8 +118,6 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
 
     const handleSeekChange = (e: any) => {
       setPlayerState({ ...playerState, played: parseFloat(e.target.value) });
-
-      /* playerRef.current?.seekTo(playerState.played, "fraction"); */
     };
 
     const handleSeekMouseUp = (e: any) => {
@@ -135,6 +125,8 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         ...playerState,
         seeking: false,
       });
+
+      playerRef.current?.seekTo(parseFloat(e.target.value), "fraction");
     };
 
     const handleProgress = (state: any) => {
@@ -150,8 +142,22 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
       setPlayerState({ ...playerState, duration });
     };
 
+    const handleEnded = () => {
+      console.log("onEnded");
+      playNextTrack();
+    };
+
     return (
       <>
+        <div className="pt-12 px-3 flex justify-center">
+          <Image
+            src={logo}
+            width={2000}
+            height={2000}
+            alt="Logo"
+            className="w-32 h-auto ml-2"
+          />
+        </div>
         <div className="absolute top-0 left-0 w-full h-[800px] -z-50">
           <Image
             src={currentTrack.art_cover}
@@ -163,7 +169,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
           />
           <div></div>
         </div>
-        <NavBar />
+        {/* <NavBar /> */}
         <div className="w-full h-40 text-white">
           {loaded && (
             <>
@@ -175,6 +181,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
                   onProgress={handleProgress}
                   onDuration={handleDuration}
                   onSeek={(e) => console.log("onSeek", e)}
+                  onEnded={handleEnded}
                 />
               </div>
               <main
@@ -183,7 +190,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
               >
                 <div>
                   <section className="py-10 pb-24 flex w-full items-center justify-center">
-                    <div className="px-4  mx-auto w-full max-w-md sm:px-6 lg:px-8 flex flex-col">
+                    <div className="px-4  mx-auto w-full max-w-[330px] md:max-w-md sm:px-6 lg:px-8 flex flex-col">
                       {/* <div className="animate__animated animate__fadeInDown flex flex-col items-center">
                         <p className=" text-sm uppercase tracking-wide font-medium text-zinc-500 text-center">
                           Now playing
@@ -254,7 +261,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
                               />
                             </button>
                             <button
-                              className="play-button w-16 h-16 text-black bg-white bg-opacity-80 rounded-full flex items-center justify-center animate__animated animate__slideInDown z-50"
+                              className="play-button w-16 h-16 text-black bg-white rounded-full flex items-center justify-center animate__animated animate__slideInDown z-50"
                               onClick={handlePlayPause}
                             >
                               {playerState.playing ? (
