@@ -12,6 +12,10 @@ export default function Document() {
           rel="stylesheet"
         />
         <link rel="icon" href="/favicon.svg" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        ></link>
       </Head>
       <body className="bg-zinc-950">
         <Main />

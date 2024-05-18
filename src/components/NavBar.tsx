@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import { getSession, signOut, useSession } from "next-auth/react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 type Props = {};
 
@@ -10,7 +11,7 @@ const NavBar = (props: Props) => {
   return (
     <>
       <nav className="w-full">
-        <div className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-4 ">
+        <div className="px-4 pt-8 pb-2 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-4 ">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <a
@@ -26,7 +27,8 @@ const NavBar = (props: Props) => {
                 />
               </a>
             </div>
-            {session && (
+            <WalletMultiButton />
+            {/* {session && (
               <div>
                 <button
                   className="px-8 py-3 bg-transparent rounded-full text-violet-700 outline-none outline-4 outline-zinc-300 transition-all duration-150 uppercase font-semibold tracking-widest"
@@ -35,7 +37,7 @@ const NavBar = (props: Props) => {
                   Log out
                 </button>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </nav>

@@ -13,16 +13,16 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 800px;
+  height: auto;
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: blur(10px);
+  filter: blur(20px);
 }
 #backdrop + div {
   width: 100%;
-  height: 800px;
-  background-color: rgba(0, 0, 0, 0.829);
+  height: 900px;
+  background-color: rgba(0, 0, 0, 0.726);
 }
 #backdrop + div::after {
   content: "";

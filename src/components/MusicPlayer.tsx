@@ -18,6 +18,7 @@ import logo from "@/assets/logo.svg";
 type PlayerProps = {
   ref: any;
   songs: any[];
+  handleTick: () => void;
 };
 
 export type PlayerRef = {
@@ -26,8 +27,6 @@ export type PlayerRef = {
 
 const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
   (props: PlayerProps, ref) => {
-    const [loaded, setLoaded] = useState(false);
-
     const [playerState, setPlayerState] = useState({
       url: "",
       pip: false,
@@ -65,7 +64,6 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
     }));
 
     useEffect(() => {
-      setLoaded(true);
       setCurrentTrack(tracks[currentTrackIndex]);
     }, []);
 
@@ -135,6 +133,8 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
       if (!playerState.seeking) {
         setPlayerState({ ...playerState, ...state });
       }
+
+      props.handleTick();
     };
 
     const handleDuration = (duration: any) => {
@@ -149,7 +149,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
 
     return (
       <>
-        <div className="pt-12 px-3 flex justify-center">
+        {/* <div className="pt-12 px-3 flex justify-center">
           <Image
             src={logo}
             width={2000}
@@ -157,41 +157,39 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
             alt="Logo"
             className="w-32 h-auto ml-2"
           />
-        </div>
-        <div className="absolute top-0 left-0 w-full h-[800px] -z-50">
+        </div> */}
+        <div className="absolute top-0 left-0 w-full -z-50 h-[800px] overflow-hidden">
           <Image
             src={currentTrack.art_cover}
             alt="backdrop"
             width={2000}
             height={2000}
             id="backdrop"
-            className="-z-50 absolute top-0 left-0 w-full h-[800px]"
+            className="-z-50 absolute top-0 left-0 w-full"
           />
           <div></div>
         </div>
         {/* <NavBar /> */}
-        <div className="w-full h-40 text-white">
-          {loaded && (
-            <>
-              <div className="hidden">
-                <ReactPlayer
-                  ref={playerRef}
-                  {...playerState}
-                  onPause={handlePause}
-                  onProgress={handleProgress}
-                  onDuration={handleDuration}
-                  onSeek={(e) => console.log("onSeek", e)}
-                  onEnded={handleEnded}
-                />
-              </div>
-              <main
-                id="profile-page"
-                className="bg-slate-  animate__animated animate__fadeIn relative"
-              >
-                <div>
-                  <section className="py-10 pb-24 flex w-full items-center justify-center">
-                    <div className="px-4  mx-auto w-full max-w-[330px] md:max-w-md sm:px-6 lg:px-8 flex flex-col">
-                      {/* <div className="animate__animated animate__fadeInDown flex flex-col items-center">
+        <div className="w-full text-white">
+          <div>
+            <div className="hidden">
+              <ReactPlayer
+                ref={playerRef}
+                {...playerState}
+                onPause={handlePause}
+                onProgress={handleProgress}
+                onDuration={handleDuration}
+                onSeek={(e) => console.log("onSeek", e)}
+                onEnded={handleEnded}
+              />
+            </div>
+            <main
+              id="profile-page"
+              className="bg-slate-  animate__animated animate__fadeIn relative"
+            >
+              <section className="py-6 pb-8 flex w-full items-center justify-center">
+                <div className="px-4  mx-auto w-full max-w-[330px] md:max-w-md sm:px-6 lg:px-8 flex flex-col">
+                  {/* <div className="animate__animated animate__fadeInDown flex flex-col items-center">
                         <p className=" text-sm uppercase tracking-wide font-medium text-zinc-500 text-center">
                           Now playing
                         </p>
@@ -217,90 +215,86 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
                         </div>
                       </div> */}
 
-                      <div>
-                        <div
-                          id="scrollTrigger"
-                          className="w-64 h-64 mx-auto mb-8 relative flex flex-col gap-8 items-center justify-center"
+                  <div>
+                    <div
+                      id="scrollTrigger"
+                      className="w-64 h-64 mx-auto mb-8 relative flex flex-col gap-8 items-center justify-center"
+                    >
+                      <Image
+                        src={currentTrack.art_cover}
+                        width={2000}
+                        height={2000}
+                        alt={currentTrack.title}
+                        className="absolute top-0 left-0 object-cover w-64 h-64 block mx-auto rounded-lg animate__animated animate__zoomIn"
+                      />
+                    </div>
+                    <div className="animate__animated animate__fadeInUp">
+                      <h2 className="text-2xl font-semibold text-center truncate">
+                        {currentTrack.title}
+                      </h2>
+                      <p className=" text-zinc-400 text-lg text-center truncate mt-2">
+                        {currentTrack.artist}
+                      </p>
+                      <div className="mt-6">
+                        <input
+                          type="range"
+                          className="w-full"
+                          min={0}
+                          max={0.999999}
+                          step="any"
+                          value={playerState.played}
+                          onMouseDown={handleSeekMouseDown}
+                          onChange={handleSeekChange}
+                          onMouseUp={handleSeekMouseUp}
+                        />
+                      </div>
+                      <div className="flex gap-6 justify-center mt-6">
+                        <button
+                          className="play-button w-16 h-16 flex items-center justify-center animate__animated animate__slideInDown z-50"
+                          onClick={playPrevTrack}
                         >
-                          <Image
-                            src={currentTrack.art_cover}
-                            width={2000}
-                            height={2000}
-                            alt={currentTrack.title}
-                            className="absolute top-0 left-0 object-cover w-64 h-64 block mx-auto rounded-lg border border-zinc-900 animate__animated animate__zoomIn"
-                          />
-                        </div>
-                        <div className="animate__animated animate__fadeInUp">
-                          <h2 className="text-2xl font-semibold text-center truncate">
-                            {currentTrack.title}
-                          </h2>
-                          <p className=" text-zinc-400 text-lg text-center truncate mt-2">
-                            {currentTrack.artist}
-                          </p>
-                          <div className="mt-6">
-                            <input
-                              type="range"
-                              className="w-full"
-                              min={0}
-                              max={0.999999}
-                              step="any"
-                              value={playerState.played}
-                              onMouseDown={handleSeekMouseDown}
-                              onChange={handleSeekChange}
-                              onMouseUp={handleSeekMouseUp}
-                            />
-                          </div>
-                          <div className="flex gap-6 justify-center mt-6">
-                            <button
-                              className="play-button w-16 h-16 flex items-center justify-center animate__animated animate__slideInDown z-50"
-                              onClick={playPrevTrack}
-                            >
-                              <Icon
-                                icon="bx:skip-previous"
-                                className="text-5xl"
-                              />
-                            </button>
-                            <button
-                              className="play-button w-16 h-16 text-black bg-white rounded-full flex items-center justify-center animate__animated animate__slideInDown z-50"
-                              onClick={handlePlayPause}
-                            >
-                              {playerState.playing ? (
-                                <Icon icon="mdi:pause" className="text-5xl" />
-                              ) : (
-                                <Icon icon="mdi:play" className="text-5xl" />
-                              )}
-                            </button>
-                            <button
-                              className="play-button w-16 h-16 flex items-center justify-center animate__animated animate__slideInDown z-50"
-                              onClick={playNextTrack}
-                            >
-                              <Icon icon="bx:skip-next" className="text-5xl" />
-                            </button>
-                          </div>
-                          <div>
-                            <td>
-                              {/* <button onClick={handleClickFullscreen}>
+                          <Icon icon="bx:skip-previous" className="text-5xl" />
+                        </button>
+                        <button
+                          className="play-button w-16 h-16 text-black bg-white rounded-full flex items-center justify-center animate__animated animate__slideInDown z-50"
+                          onClick={handlePlayPause}
+                        >
+                          {playerState.playing ? (
+                            <Icon icon="mdi:pause" className="text-5xl" />
+                          ) : (
+                            <Icon icon="mdi:play" className="text-5xl" />
+                          )}
+                        </button>
+                        <button
+                          className="play-button w-16 h-16 flex items-center justify-center animate__animated animate__slideInDown z-50"
+                          onClick={playNextTrack}
+                        >
+                          <Icon icon="bx:skip-next" className="text-5xl" />
+                        </button>
+                      </div>
+                      <div>
+                        <td>
+                          {/* <button onClick={handleClickFullscreen}>
                                 Fullscreen
                               </button> */}
-                              {/* {light && (
+                          {/* {light && (
                                 <button onClick={() => player.showPreview()}>
                                   Show preview
                                 </button>
                               )} */}
-                              {/*    {ReactPlayer.canEnablePIP(url) && (
+                          {/*    {ReactPlayer.canEnablePIP(url) && (
                                 <button onClick={handleTogglePIP}>
                                   {pip ? "Disable PiP" : "Enable PiP"}
                                 </button>
                               )} */}
-                            </td>
-                          </div>
-                        </div>
+                        </td>
                       </div>
                     </div>
-                  </section>
+                  </div>
                 </div>
+              </section>
 
-                {/* <div
+              {/* <div
                   id="bottomPlayer"
                   className="mt-20 fixed bottom-0 w-full flex justify-center p-3 pb-8 animate__animated animate__fadeInUp"
                 >
@@ -327,9 +321,8 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
                     </button>
                   </div>
                 </div> */}
-              </main>
-            </>
-          )}
+            </main>
+          </div>
         </div>
       </>
     );

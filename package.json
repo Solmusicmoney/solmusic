@@ -11,6 +11,10 @@
   "dependencies": {
     "@iconify/react": "^4.1.1",
     "@solana-developers/helpers": "^2.3.0",
+    "@solana/spl-token": "^0.4.6",
+    "@solana/wallet-adapter-react": "^0.15.35",
+    "@solana/wallet-adapter-react-ui": "^0.9.35",
+    "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.91.8",
     "autoprefixer": "^10.4.19",
     "crypto-hash": "^3.0.0",
