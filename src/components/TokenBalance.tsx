@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL, Transaction } from "@solana/web3.js";
+import {
+  LAMPORTS_PER_SOL,
+  Transaction,
+  sendAndConfirmRawTransaction,
+  sendAndConfirmTransaction,
+} from "@solana/web3.js";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { buildCreateAssociatedTokenAccountTransaction } from "@/lib/solana/create-associated-token-account";
 import { mint } from "@/lib/solana/load-env-mint";
@@ -120,7 +125,7 @@ function TokenBalance({ minting }: Props) {
   }, [connection, publicKey]);
 
   return (
-    <div className="bg-zinc-800 bg-opacity-30 w-full sm:w-80 p-4 px-6 rounded">
+    <div className="bg-zinc-800 bg-opacity-30 w-full sm:w-80 p-4 px-6 rounded-md">
       <div className="flex gap-1 items-center text-white justify-center">
         {/* <WalletIcon wallet={wallet} /> */}
         <Icon icon="system-uicons:coins" className="text-2xl" />

@@ -2,7 +2,7 @@ import NavBar from "@/components/NavBar";
 import { NextPage, NextPageContext } from "next";
 import { getSession, signIn } from "next-auth/react";
 import Image from "next/image";
-import spotifyLogo from "@/assets/spotify-logo.png";
+import googleLogo from "@/assets/google-logo.png";
 import logo from "@/assets/mark.svg";
 import mark from "@/assets/mark-yellow.svg";
 
@@ -40,20 +40,20 @@ const SignIn: NextPage = function () {
               Connect Wallet
             </button> */}
             <button
-              className="px-8 py-3 rounded-full outline-none outline-2 transition-all duration-150 uppercase font-semibold tracking-widest flex gap-2 items-center shadow-sm border-2 hover:bg-white hover:text-zinc-950 focus:outline-[#1dd661]"
-              onClick={() => signIn("spotify")}
+              className="pl-5 pr-8 py-3 rounded-full outline-none outline-2 transition-all duration-150 capitalize font-semibold tracking-widest flex gap-3 items-center shadow-sm border-2 hover:bg-white hover:text-zinc-950 focus:outline-purple-600"
+              onClick={() => signIn("google")}
             >
-              <span>Sign in with</span>
               <Image
-                src={spotifyLogo}
+                src={googleLogo}
                 width={500}
                 height={500}
-                className="w-28 h-auto ml-2"
-                alt="Spotify Logo"
+                className="w-5 h-auto ml-2"
+                alt="Google Logo"
               />
+              <span>Sign in with Google</span>
             </button>
           </div>
-          <div className="mt-12 flex flex-col items-center">
+          {/* <div className="mt-12 flex flex-col items-center">
             <p className="uppercase tracking-wider text-sm text-zinc-500 font-medium">
               Sign in reward
             </p>
@@ -67,13 +67,13 @@ const SignIn: NextPage = function () {
               />
               <p className="text-xl">
                 <span className="dm-mono-regular tracking-wider">1,000</span>
-                {/* <span className="uppercase tracking-wider text-sm text-zinc-500 font-medium">
+                <span className="uppercase tracking-wider text-sm text-zinc-500 font-medium">
                   {" "}
                   SOLM
-                </span> */}
+                </span>
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

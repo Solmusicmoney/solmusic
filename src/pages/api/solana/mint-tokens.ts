@@ -28,7 +28,13 @@ export default async function handler(
       let session = await getServerSession(req, res, authOptions);
 
       if (session) {
-        const transaction = new Transaction().add(
+        const { blockhash, lastValidBlockHeight } =
+          await connection.getLatestBlockhash();
+
+        const transaction = new Transaction({
+          blockhash: blockhash,
+          lastValidBlockHeight: lastValidBlockHeight,
+        }).add(
           createMintToInstruction(
             mint,
             new PublicKey(destination),
@@ -36,6 +42,8 @@ export default async function handler(
             parseInt(process.env.MINT_AMOUNT!) * 10 ** 2 // because we created the mint with 2 decimals
           )
         );
+
+        transaction.recentBlockhash = blockhash;
 
         const transactionSignature = await sendAndConfirmTransaction(
           connection,

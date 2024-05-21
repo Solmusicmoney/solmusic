@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next";
 import SpotifyProvider from "next-auth/providers/spotify";
+import GoogleProvider from "next-auth/providers/google";
 /* import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"; */
 import { AuthOptions } from "next-auth";
@@ -15,6 +16,17 @@ export const authOptions: AuthOptions = {
       clientId: <string>process.env.SPOTIFY_CLIENT_ID,
       clientSecret: <string>process.env.SPOTIFY_CLIENT_SECRET,
       authorization: { params: { scope: discordAuthScopes } },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
   ],
   session: { strategy: "jwt" },
@@ -36,7 +48,7 @@ export const authOptions: AuthOptions = {
       // account will only result to true if this is the first time a user is signing up
       if (account) {
         token.accessToken = account.access_token;
-        token.spotifyId = profile.id;
+        token.id = profile.id;
       }
 
       /* // check if the user's serverId was added to the session, then add it to the jwt
@@ -54,7 +66,7 @@ export const authOptions: AuthOptions = {
     async session({ session, token }: { session: any; token: any }) {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
-      session.spotifyId = token.spotifyId;
+      session.id = token.id;
 
       /* // fetch the user's id from the database and add it to the session object
       const user: any = await prisma.user.findUnique({
@@ -66,6 +78,12 @@ export const authOptions: AuthOptions = {
 
       return session;
     },
+    /*  async signIn({ account, profile }) {
+      if (account?.provider === "google") {
+        return profile?.email_verified && profile?.email.endsWith("@example.com")
+      }
+      return true // Do different verification for other providers that don't have `email_verified`
+    }, */
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

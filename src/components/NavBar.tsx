@@ -27,17 +27,19 @@ const NavBar = (props: Props) => {
                 />
               </a>
             </div>
-            <WalletMultiButton />
-            {/* {session && (
-              <div>
-                <button
-                  className="px-8 py-3 bg-transparent rounded-full text-violet-700 outline-none outline-4 outline-zinc-300 transition-all duration-150 uppercase font-semibold tracking-widest"
-                  onClick={() => signOut()}
-                >
-                  Log out
-                </button>
-              </div>
-            )} */}
+            <div className="flex gap-6 items-center">
+              <WalletMultiButton />
+              {/* {session && (
+                <div className="hidden md:block">
+                  <button
+                    className="px-8 py-3 rounded-full outline-none outline-2 transition-all duration-150 capitalize font-semibold tracking-widest flex gap-3 items-center shadow-sm text-white border-2 hover:bg-white hover:text-zinc-950 focus:outline-purple-600"
+                    onClick={() => signOut()}
+                  >
+                    Log out
+                  </button>
+                </div>
+              )} */}
+            </div>
           </div>
         </div>
       </nav>

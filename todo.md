@@ -1,5 +1,11 @@
 - change auth to Google
 - fix: player seek in React Player
-- creat Rewards class to share token reward
-- create Miner component to keep track of users listening time
-- Connect wallet to app
+- create referral system for onboarding new users
+- Deploy app and music server
+- Build music server dashboard for uploading songs and accessing them via api
+- Build recommendation system for personalized streaming
+- Rebuild landing page for solmusic
+- Add retry mechanism for blockhash retrieval failure
+- Create tasks rewards
+- Add rate limiter for minting endpoint
+- Upload more songs locally
