@@ -9,8 +9,8 @@ const nextConfig = {
         pathname: "**",
       },
       {
-        protocol: "http",
-        hostname: "base23-server.free.nf",
+        protocol: "https",
+        hostname: "solmusic.fun",
         pathname: "**",
       },
     ],
