@@ -17,30 +17,35 @@ import {
   createDefaultAuthorizationResultCache,
   createDefaultWalletNotFoundHandler,
 } from "@solana-mobile/wallet-adapter-mobile";
+import { isMobile } from "react-device-detect";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const network = clusterApiUrl(process.env.NEXT_PUBLIC_CLUSTER as Cluster);
   const walletConfig: PhantomWalletAdapterConfig = {
     appName: "Solmusic",
   };
-  const wallets = useMemo(
-    () => [
-      new SolanaMobileWalletAdapter({
-        addressSelector: createDefaultAddressSelector(),
-        appIdentity: {
-          name: "Solmusic",
-          uri: "https://app.solmusic.fun",
-          icon: "https://arweave.net/heHxb452fNXSW_SScXgg8d-exoLIz3seiCZ1oK8mX_s",
-        },
-        authorizationResultCache: createDefaultAuthorizationResultCache(),
-        cluster: network,
-        onWalletNotFound: createDefaultWalletNotFoundHandler(),
-      }),
-      new PhantomWalletAdapter(walletConfig),
-      new SolflareWalletAdapter(),
-    ],
-    [network]
-  );
+  const wallets = useMemo(() => {
+    if (isMobile) {
+      return [
+        new SolanaMobileWalletAdapter({
+          addressSelector: createDefaultAddressSelector(),
+          appIdentity: {
+            name: "Solmusic",
+            uri: "https://app.solmusic.fun",
+            icon: "https://arweave.net/heHxb452fNXSW_SScXgg8d-exoLIz3seiCZ1oK8mX_s",
+          },
+          authorizationResultCache: createDefaultAuthorizationResultCache(),
+          cluster: network,
+          onWalletNotFound: createDefaultWalletNotFoundHandler(),
+        }),
+      ];
+    } else {
+      return [
+        new PhantomWalletAdapter(walletConfig),
+        new SolflareWalletAdapter(walletConfig),
+      ];
+    }
+  }, [network]);
 
   return (
     <ConnectionProvider endpoint={network}>
