@@ -7,14 +7,38 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { Cluster, clusterApiUrl } from "@solana/web3.js";
 import {
   PhantomWalletAdapter,
+  PhantomWalletAdapterConfig,
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 require("@solana/wallet-adapter-react-ui/styles.css");
+import {
+  SolanaMobileWalletAdapter,
+  createDefaultAddressSelector,
+  createDefaultAuthorizationResultCache,
+  createDefaultWalletNotFoundHandler,
+} from "@solana-mobile/wallet-adapter-mobile";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const network = clusterApiUrl(process.env.NEXT_PUBLIC_CLUSTER as Cluster);
+  const walletConfig: PhantomWalletAdapterConfig = {
+    appName: "Solmusic",
+  };
   const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
+    () => [
+      new SolanaMobileWalletAdapter({
+        addressSelector: createDefaultAddressSelector(),
+        appIdentity: {
+          name: "Solmusic",
+          uri: "https://app.solmusic.fun",
+          icon: "https://arweave.net/heHxb452fNXSW_SScXgg8d-exoLIz3seiCZ1oK8mX_s",
+        },
+        authorizationResultCache: createDefaultAuthorizationResultCache(),
+        cluster: network,
+        onWalletNotFound: createDefaultWalletNotFoundHandler(),
+      }),
+      new PhantomWalletAdapter(walletConfig),
+      new SolflareWalletAdapter(),
+    ],
     [network]
   );
 
