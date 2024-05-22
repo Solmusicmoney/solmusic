@@ -12,11 +12,6 @@ const discordAuthScopes = ["user-read-email", "playlist-modify-public"].join(
 export const authOptions: AuthOptions = {
   /* adapter: PrismaAdapter(prisma), */
   providers: [
-    SpotifyProvider({
-      clientId: <string>process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: <string>process.env.SPOTIFY_CLIENT_SECRET,
-      authorization: { params: { scope: discordAuthScopes } },
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
