@@ -24,8 +24,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const walletConfig: PhantomWalletAdapterConfig = {
     appName: "Solmusic",
   };
-  const wallets = useMemo(
-    () => /* {
+  const wallets = useMemo(() => {
     if (isMobile) {
       return [
         new SolanaMobileWalletAdapter({
@@ -36,7 +35,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
             icon: "https://arweave.net/heHxb452fNXSW_SScXgg8d-exoLIz3seiCZ1oK8mX_s",
           },
           authorizationResultCache: createDefaultAuthorizationResultCache(),
-          cluster: network,
+          cluster: process.env.NEXT_PUBLIC_CLUSTER,
           onWalletNotFound: createDefaultWalletNotFoundHandler(),
         }),
       ];
@@ -46,12 +45,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
         new SolflareWalletAdapter(walletConfig),
       ];
     }
-  } */ [
-      new PhantomWalletAdapter(walletConfig),
-      new SolflareWalletAdapter(walletConfig),
-    ],
-    [network]
-  );
+  }, [network]);
 
   return (
     <ConnectionProvider endpoint={network}>
