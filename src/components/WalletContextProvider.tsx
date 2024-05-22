@@ -24,7 +24,8 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const walletConfig: PhantomWalletAdapterConfig = {
     appName: "Solmusic",
   };
-  const wallets = useMemo(() => {
+  const wallets = useMemo(
+    () => /* {
     if (isMobile) {
       return [
         new SolanaMobileWalletAdapter({
@@ -45,7 +46,12 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
         new SolflareWalletAdapter(walletConfig),
       ];
     }
-  }, [network]);
+  } */ [
+      new PhantomWalletAdapter(walletConfig),
+      new SolflareWalletAdapter(walletConfig),
+    ],
+    [network]
+  );
 
   return (
     <ConnectionProvider endpoint={network}>
