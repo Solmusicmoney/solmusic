@@ -40,6 +40,29 @@ function TokenBalance({ minting }: Props) {
 
       console.log("Wallet connected");
 
+      const balance = await connection.getBalance(publicKey);
+
+      // If balance is zero, airdrop 1 SOL
+      if (balance === 0) {
+        console.log(`Airdropping 1 SOL to ${publicKey}...`);
+
+        const airdropSignature = await connection.requestAirdrop(
+          publicKey,
+          LAMPORTS_PER_SOL
+        );
+
+        // Confirm the transaction
+        const { blockhash, lastValidBlockHeight } =
+          await connection.getLatestBlockhash();
+        await connection.confirmTransaction({
+          signature: airdropSignature,
+          blockhash,
+          lastValidBlockHeight,
+        });
+
+        console.log(`Airdrop complete for ${publicKey}`);
+      }
+
       try {
         const associatedTokenAddress = await getAssociatedTokenAddress(
           mint,
