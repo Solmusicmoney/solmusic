@@ -21,10 +21,22 @@ const Home: NextPage = function () {
   const { publicKey, sendTransaction } = useWallet();
   const { connection } = useConnection();
   const [minting, setMinting] = useState(false);
+  const [walletConnected, setWalletConnected] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
+
+  useEffect(() => {
+    if (!connection || !publicKey) {
+      console.log("Wallet not connected");
+      setWalletConnected(false);
+    } else {
+      console.log("Wallet connected");
+      setWalletConnected(true);
+    }
+    return;
+  }, [connection, publicKey]);
 
   const handleTick = async () => {
     if (miningProgress === 60) {
@@ -67,8 +79,25 @@ const Home: NextPage = function () {
           <NavBar />
           <MusicPlayer ref={ref} songs={songs} handleTick={handleTick} />
           <div className="flex flex-col items-center sm:flex-row gap-6 sm:justify-center mb-10 px-4">
-            <Miner progress={miningProgress} />
-            <TokenBalance minting={minting} />
+            {walletConnected ? (
+              <>
+                <Miner progress={miningProgress} />
+                <TokenBalance minting={minting} />
+              </>
+            ) : (
+              <div className="bg-zinc-800 bg-opacity-30 w-full sm:w-96 p-6 rounded-md">
+                <div className="flex flex-col gap-1 items-center text-white justify-center">
+                  <Icon icon="ion:warning-outline" className="text-3xl mb-2" />
+                  <span className="text-xl font-semibold">
+                    Wallet not connected
+                  </span>
+                </div>
+                <p className="text-center text-zinc-400 mt-1">
+                  Connect a solana compatible wallet like Phantom or Solflare to
+                  earn SOLM while listening to music
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}
