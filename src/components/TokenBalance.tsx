@@ -119,9 +119,11 @@ function TokenBalance({ minting }: Props) {
 
               signature = await sendTransaction(transaction, connection);
               console.log("Token account created: ", signature);
+              alert(`Token account created: ${signature}`);
             } catch (error: unknown) {
               // Ignore all errors; for now there is no API-compatible way to selectively ignore the expected
               // instruction error if the associated account exists already.
+              throw error;
             }
 
             // Now this should always succeed
@@ -143,6 +145,7 @@ function TokenBalance({ minting }: Props) {
         setATA(associatedTokenAddress.toBase58());
       } catch (error) {
         console.log(error);
+        alert(error);
       }
     })();
   }, [connection, publicKey]);
