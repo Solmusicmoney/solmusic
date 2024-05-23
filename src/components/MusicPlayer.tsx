@@ -25,6 +25,15 @@ export type PlayerRef = {
   getPlayerRef: () => ReactPlayer | null;
 };
 
+function shuffleArray(array: any[]) {
+  let shuffledArray = array.slice(); // Create a copy of the original array
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // Get a random index
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap elements
+  }
+  return shuffledArray;
+}
+
 const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
   (props: PlayerProps, ref) => {
     const [playerState, setPlayerState] = useState({
@@ -46,13 +55,13 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
       width: "100%",
       height: "100%",
     });
-    const [tracks, setTracks] = useState(props.songs);
+    const [tracks, setTracks] = useState(shuffleArray(props.songs));
 
     const [currentTrackIndex, setCurrTrackIndex] = useState(0);
 
     const [currentTrack, setCurrentTrack] = useState({
       url: "",
-      art_cover: "",
+      album_cover: "",
       title: "",
       artist: "",
     });
@@ -160,7 +169,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         </div> */}
         <div className="absolute top-0 left-0 w-full -z-50 h-[800px] overflow-hidden">
           <Image
-            src={currentTrack.art_cover}
+            src={currentTrack.album_cover}
             alt="backdrop"
             width={2000}
             height={2000}
@@ -221,7 +230,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
                       className="w-64 h-64 mx-auto mb-8 relative flex flex-col gap-8 items-center justify-center"
                     >
                       <Image
-                        src={currentTrack.art_cover}
+                        src={currentTrack.album_cover}
                         width={2000}
                         height={2000}
                         alt={currentTrack.title}

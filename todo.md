@@ -1,7 +1,5 @@
-- change auth to Google
 - fix: player seek in React Player
 - create referral system for onboarding new users
-- Deploy app and music server
 - Build music server dashboard for uploading songs and accessing them via api
 - Build recommendation system for personalized streaming
 - Rebuild landing page for solmusic
