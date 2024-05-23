@@ -72,7 +72,7 @@ let songs = [
     title: "Kpe Paso (feat. Olamide)",
     artist: "Wande Coal",
     url: songUrl("Kpe Paso (feat. Olamide).weba"),
-    album_cover: artCoverUrl("Happiness (feat. Asake & Gunna).jpg"),
+    album_cover: artCoverUrl("Kpe Paso (feat. Olamide).jpg"),
   },
   {
     title: "Reason You",
