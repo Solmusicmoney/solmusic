@@ -145,7 +145,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         setPlayerState({ ...playerState, ...state });
       }
 
-      props.handleTick();
+      if (playerState.playing) props.handleTick();
     };
 
     const handleDuration = (duration: any) => {
