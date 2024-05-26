@@ -40,29 +40,6 @@ function TokenBalance({ minting }: Props) {
 
       console.log("Wallet connected");
 
-      const balance = await connection.getBalance(publicKey);
-
-      // If balance is zero, airdrop 1 SOL
-      if (balance === 0) {
-        console.log(`Airdropping 1 SOL to ${publicKey}...`);
-
-        const airdropSignature = await connection.requestAirdrop(
-          publicKey,
-          LAMPORTS_PER_SOL
-        );
-
-        // Confirm the transaction
-        const { blockhash, lastValidBlockHeight } =
-          await connection.getLatestBlockhash();
-        await connection.confirmTransaction({
-          signature: airdropSignature,
-          blockhash,
-          lastValidBlockHeight,
-        });
-
-        console.log(`Airdrop complete for ${publicKey}`);
-      }
-
       try {
         const associatedTokenAddress = await getAssociatedTokenAddress(
           mint,
@@ -81,71 +58,24 @@ function TokenBalance({ minting }: Props) {
           "confirmed"
         );
 
-        /* let accountInfo = await connection.getAccountInfo(
-          publicKey,
-          "confirmed"
-        );
-
-        let bal = accountInfo!.lamports / LAMPORTS_PER_SOL;
-        setBalance(bal ?? 0); */
-
-        let account: Account;
-        let signature: string;
-
-        try {
-          account = await getAccount(
-            connection,
-            associatedTokenAddress,
-            "confirmed"
-          );
-        } catch (error: unknown) {
-          // TokenAccountNotFoundError can be possible if the associated address has already received some lamports,
-          // becoming a system account. Assuming program derived addressing is safe, this is the only case for the
-          // TokenInvalidAccountOwnerError in this code path.
-          if (
-            error instanceof TokenAccountNotFoundError ||
-            error instanceof TokenInvalidAccountOwnerError
-          ) {
-            // As this isn't atomic, it's possible others can create associated accounts meanwhile.
-            try {
-              const transaction = new Transaction().add(
-                createAssociatedTokenAccountInstruction(
-                  publicKey,
-                  associatedTokenAddress,
-                  publicKey,
-                  mint
-                )
-              );
-
-              signature = await sendTransaction(transaction, connection);
-              console.log("Token account created: ", signature);
-              alert(`Token account created: ${signature}`);
-            } catch (error: unknown) {
-              // Ignore all errors; for now there is no API-compatible way to selectively ignore the expected
-              // instruction error if the associated account exists already.
-              throw error;
-            }
-
-            // Now this should always succeed
-            account = await getAccount(
-              connection,
+        let data = await (
+          await fetch("/api/solana/create-token-account", {
+            method: "POST",
+            body: JSON.stringify({
               associatedTokenAddress,
-              "confirmed"
-            );
-          } else {
-            throw error;
-          }
+              publicKey,
+            }),
+          })
+        ).json();
+
+        if (data.error) {
+          throw new Error(data.error);
         }
 
-        if (!account.mint.equals(mint)) throw new TokenInvalidMintError();
-        if (!account.owner.equals(publicKey))
-          throw new TokenInvalidOwnerError();
-
-        setBalance(parseInt(account.amount.toString()) / 100);
+        setBalance(data.balance);
         setATA(associatedTokenAddress.toBase58());
       } catch (error) {
         console.log(error);
-        alert(error);
       }
     })();
   }, [connection, publicKey]);
@@ -169,7 +99,7 @@ function TokenBalance({ minting }: Props) {
       <a
         href={`https://explorer.solana.com/address/${ata}?cluster=${process.env.NEXT_PUBLIC_CLUSTER}`}
         target="_blank"
-        className="text-center text-sm text-zinc-400 mt-3 w-full flex gap-1 justify-center items-center"
+        className="text-center hover:text-yellow-300 text-sm text-zinc-400 mt-3 w-full flex gap-1 justify-center items-center"
       >
         View Token Account
         <Icon icon="ri:external-link-line" className="text-xl" />

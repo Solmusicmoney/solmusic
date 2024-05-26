@@ -121,6 +121,8 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         ...playerState,
         seeking: true,
       });
+
+      console.log(playerState);
     };
 
     const handleSeekChange = (e: any) => {
@@ -133,7 +135,7 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
         seeking: false,
       });
 
-      playerRef.current?.seekTo(parseFloat(e.target.value), "fraction");
+      playerRef.current?.seekTo(parseFloat(e.target.value));
     };
 
     const handleProgress = (state: any) => {
@@ -231,8 +233,8 @@ const MusicPlayer = forwardRef<PlayerRef, PlayerProps>(
                     >
                       <Image
                         src={currentTrack.album_cover}
-                        width={2000}
-                        height={2000}
+                        width={5000}
+                        height={5000}
                         alt={currentTrack.title}
                         className="absolute top-0 left-0 object-cover w-64 h-64 block mx-auto rounded-lg animate__animated animate__zoomIn"
                       />

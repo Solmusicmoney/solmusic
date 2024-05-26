@@ -18,25 +18,14 @@ const Home: NextPage = function () {
   const [loaded, setLoaded] = useState(false);
   const ref = useRef<PlayerRef>(null);
   const [miningProgress, setMiningProgress] = useState(0);
-  const { publicKey, sendTransaction } = useWallet();
+  const { publicKey, connected } = useWallet();
   const { connection } = useConnection();
   const [minting, setMinting] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletState, setWalletState] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
-
-  useEffect(() => {
-    if (!connection || !publicKey) {
-      console.log("Wallet not connected");
-      setWalletConnected(false);
-    } else {
-      console.log("Wallet connected");
-      setWalletConnected(true);
-    }
-    return;
-  }, [connection, publicKey]);
 
   const handleTick = async () => {
     if (miningProgress === 60) {
@@ -60,16 +49,24 @@ const Home: NextPage = function () {
       false
     );
 
-    let { transactionSignature } = await (
-      await fetch("/api/solana/mint-tokens", {
-        method: "POST",
-        body: JSON.stringify({
-          destination: associatedTokenAddress,
-        }),
-      })
-    ).json();
+    try {
+      let data = await (
+        await fetch("/api/solana/mint-tokens", {
+          method: "POST",
+          body: JSON.stringify({
+            destination: associatedTokenAddress,
+          }),
+        })
+      ).json();
 
-    setMinting(false);
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setMinting(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -79,7 +76,7 @@ const Home: NextPage = function () {
           <NavBar />
           <MusicPlayer ref={ref} songs={songs} handleTick={handleTick} />
           <div className="flex flex-col items-center sm:flex-row gap-6 sm:justify-center mb-10 px-4">
-            {walletConnected ? (
+            {connected ? (
               <>
                 <Miner progress={miningProgress} />
                 <TokenBalance minting={minting} />
