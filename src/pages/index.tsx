@@ -12,7 +12,6 @@ import { mint } from "@/lib/solana/load-env-mint";
 import { buildCreateAssociatedTokenAccountTransaction } from "@/lib/solana/create-associated-token-account";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { getAssociatedTokenAddress, mintTo } from "@solana/spl-token";
-import { getSession } from "next-auth/react";
 
 const Home: NextPage = function () {
   const [loaded, setLoaded] = useState(false);
@@ -108,19 +107,5 @@ const Home: NextPage = function () {
     </>
   );
 };
-
-/* export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/sign-in",
-        permanent: false,
-      },
-    };
-  }
-
-  return { props: {} };
-} */
 
 export default Home;

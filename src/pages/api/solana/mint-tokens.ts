@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
 import { connection } from "@/lib/solana/connect-to-network";
 import { keypair } from "@/lib/solana/load-env-keypair";
 import { createMintToInstruction, mintTo } from "@solana/spl-token";
@@ -25,33 +23,30 @@ export default async function handler(
     }
 
     try {
-      let session = await getServerSession(req, res, authOptions);
+      const { blockhash, lastValidBlockHeight } =
+        await connection.getLatestBlockhash();
 
-      if (session) {
-        const { blockhash, lastValidBlockHeight } =
-          await connection.getLatestBlockhash();
+      const transaction = new Transaction({
+        blockhash: blockhash,
+        lastValidBlockHeight: lastValidBlockHeight,
+      }).add(
+        createMintToInstruction(
+          mint,
+          new PublicKey(destination),
+          keypair.publicKey,
+          parseInt(process.env.MINT_AMOUNT!) * 10 ** 2 // because we created the mint with 2 decimals
+        )
+      );
 
-        const transaction = new Transaction({
-          blockhash: blockhash,
-          lastValidBlockHeight: lastValidBlockHeight,
-        }).add(
-          createMintToInstruction(
-            mint,
-            new PublicKey(destination),
-            keypair.publicKey,
-            parseInt(process.env.MINT_AMOUNT!) * 10 ** 2 // because we created the mint with 2 decimals
-          )
-        );
+      transaction.recentBlockhash = blockhash;
 
-        transaction.recentBlockhash = blockhash;
+      const transactionSignature = await sendAndConfirmTransaction(
+        connection,
+        transaction,
+        [keypair]
+      );
 
-        const transactionSignature = await sendAndConfirmTransaction(
-          connection,
-          transaction,
-          [keypair]
-        );
-
-        /* const transactionSignature = await mintTo(
+      /* const transactionSignature = await mintTo(
           connection,
           keypair,
           mint,
@@ -59,10 +54,7 @@ export default async function handler(
           keypair,
           parseInt(process.env.MINT_AMOUNT!) * 10 ** 2 // because we created the mint with 2 decimals
         ); */
-        return res.status(200).json({ transactionSignature });
-      } else {
-        return res.status(403).json({ error: "Unauthorized request" });
-      }
+      return res.status(200).json({ transactionSignature });
     } catch (error: any) {
       console.log("error", error);
       return res.status(error.status ?? 500).json({ error: error });

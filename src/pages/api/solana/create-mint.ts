@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
 import { createTokenMint } from "@/lib/solana/create-token-mint";
 import { getExplorerLink } from "@solana-developers/helpers";
 import { updateTokenMetadata } from "@solana/spl-token";
@@ -28,8 +26,6 @@ export default async function handler(
     }
 
     try {
-      let session = await getServerSession(req, res, authOptions);
-
       return res.status(200).json({});
     } catch (error: any) {
       console.log("error", error);

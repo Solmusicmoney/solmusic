@@ -25,7 +25,6 @@
     "crypto-hash": "^3.0.0",
     "dotenv": "^16.4.5",
     "next": "14.2.3",
-    "next-auth": "^4.24.7",
     "openai": "^4.45.0",
     "react": "^18",
     "react-device-detect": "^2.2.3",

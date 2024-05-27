@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import bkydLogo from "@/assets/small-logo.svg";
@@ -13,21 +12,19 @@ const inter = Inter({
 
 export default function App({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <WalletContextProvider>
-        <main className={`${inter.className} relative`}>
-          <Component {...pageProps} />
-          {/* <a href="https://bkyd.studio" target="_blank">
+    <WalletContextProvider>
+      <main className={`${inter.className} relative`}>
+        <Component {...pageProps} />
+        {/* <a href="https://bkyd.studio" target="_blank">
           <div className="p-3 rounded border bg-white shadow-md fixed bottom-2 right-2 flex items-center gap-3 hover:bg-black text-zinc-800 hover:text-[#FED403] transition duration-150 hover:border-black">
             <p className="text-sm font-mono ">Built By</p>
             <Image src={bkydLogo} alt="" className="w-auto h-5" />
           </div>
         </a> */}
-        </main>
-      </WalletContextProvider>
-    </SessionProvider>
+      </main>
+    </WalletContextProvider>
   );
 }
