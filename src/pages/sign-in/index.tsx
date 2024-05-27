@@ -1,4 +1,4 @@
-import NavBar from "@/components/NavBar";
+/* import NavBar from "@/components/NavBar";
 import { NextPage, NextPageContext } from "next";
 import { getSession, signIn } from "next-auth/react";
 import Image from "next/image";
@@ -33,12 +33,12 @@ const SignIn: NextPage = function () {
           </div>
 
           <div className="flex justify-center">
-            {/* <button
+            <button
               className="px-8 py-3 rounded-full border-2 border-[#00F6AE] transition-all duration-150 uppercase font-semibold tracking-widest gap-2 text-[#00F6AE] hover:bg-[#00F6AE] hover:text-[#0d4232] focus:outline-[#00F6AE] justify-center "
               onClick={() => {}}
             >
               Connect Wallet
-            </button> */}
+            </button>
             <button
               className="pl-5 pr-8 py-3 rounded-full outline-none outline-2 transition-all duration-150 capitalize font-semibold tracking-widest flex gap-3 items-center shadow-sm border-2 hover:bg-white hover:text-zinc-950 focus:outline-purple-600"
               onClick={() => signIn("google")}
@@ -53,7 +53,7 @@ const SignIn: NextPage = function () {
               <span>Sign in with Google</span>
             </button>
           </div>
-          {/* <div className="mt-12 flex flex-col items-center">
+          <div className="mt-12 flex flex-col items-center">
             <p className="uppercase tracking-wider text-sm text-zinc-500 font-medium">
               Sign in reward
             </p>
@@ -73,7 +73,7 @@ const SignIn: NextPage = function () {
                 </span>
               </p>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </>
@@ -94,3 +94,4 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 export default SignIn;
+ */

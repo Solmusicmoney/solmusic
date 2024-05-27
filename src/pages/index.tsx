@@ -96,13 +96,20 @@ const Home: NextPage = function () {
               </div>
             )}
           </div>
+
+          <div>
+            <p className="text-zinc-300 text-sm mt-3 mb-10 mx-auto max-w-md text-center">
+              This is just a demo, running on Solana Testnet. No real funds is
+              being distributed until we launch.
+            </p>
+          </div>
         </>
       )}
     </>
   );
 };
 
-export async function getServerSideProps(context: NextPageContext) {
+/* export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
   if (!session) {
     return {
@@ -114,6 +121,6 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 
   return { props: {} };
-}
+} */
 
 export default Home;
