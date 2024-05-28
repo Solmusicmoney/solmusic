@@ -108,7 +108,7 @@ const Home: NextPage = function () {
                 Startup built by
               </p>
               <a
-                href="https://bkyd.studio"
+                href="https://whatsapp.com/channel/0029Va5cB4fEAKWN4vCmm70Y"
                 target="_blank"
                 className="flex font-medium text-white"
               >
