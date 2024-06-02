@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: "solmusic.fun",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "*.ytimg.com",
+        pathname: "**",
+      },
     ],
   },
 };

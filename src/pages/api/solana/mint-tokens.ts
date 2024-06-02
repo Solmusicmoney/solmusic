@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connection } from "@/lib/solana/connect-to-network";
 import { keypair } from "@/lib/solana/load-env-keypair";
-import { createMintToInstruction, mintTo } from "@solana/spl-token";
+import { createMintToInstruction, getAccount, mintTo } from "@solana/spl-token";
 import {
   PublicKey,
   Transaction,
@@ -14,13 +14,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { destination } = JSON.parse(req.body);
+    let { destination } = JSON.parse(req.body);
 
     if (!destination) {
       return res
         .status(500)
         .json({ error: "Please provide user's token account address" });
     }
+
+    destination = new PublicKey(destination);
 
     try {
       const { blockhash, lastValidBlockHeight } =
@@ -32,7 +34,7 @@ export default async function handler(
       }).add(
         createMintToInstruction(
           mint,
-          new PublicKey(destination),
+          destination,
           keypair.publicKey,
           parseInt(process.env.MINT_AMOUNT!) * 10 ** 2 // because we created the mint with 2 decimals
         )
@@ -46,15 +48,11 @@ export default async function handler(
         [keypair]
       );
 
-      /* const transactionSignature = await mintTo(
-          connection,
-          keypair,
-          mint,
-          new PublicKey(destination),
-          keypair,
-          parseInt(process.env.MINT_AMOUNT!) * 10 ** 2 // because we created the mint with 2 decimals
-        ); */
-      return res.status(200).json({ transactionSignature });
+      const account = await getAccount(connection, destination, "confirmed");
+
+      let balance = parseInt(account.amount.toString()) / 100;
+
+      return res.status(200).json({ transactionSignature, balance });
     } catch (error: any) {
       console.log("error", error);
       return res.status(error.status ?? 500).json({ error: error });

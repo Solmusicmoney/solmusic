@@ -16,6 +16,7 @@ export default function Document() {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         ></link>
+        <title>Solmusic</title>
       </Head>
       <body className="bg-zinc-950">
         <Main />
