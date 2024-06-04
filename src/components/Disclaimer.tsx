@@ -14,7 +14,7 @@ function Disclaimer() {
           Built with love & music by
         </p>
         <a
-          href="https://whatsapp.com/channel/0029Va5cB4fEAKWN4vCmm70Y"
+          href="https://bkyd.studio"
           target="_blank"
           className="flex font-medium text-white"
         >

@@ -27,14 +27,14 @@ export type PlaylistStateStatusType =
 
 export interface PlaylistStateType {
   data: PlaylistType | null;
-  url: string;
+  url: string | undefined;
   status: PlaylistStateStatusType;
   error: string | null;
 }
 
 const initialState: PlaylistStateType = {
   data: null,
-  url: "https://music.youtube.com/playlist?list=OLAK5uy_kAPDTM-wp4LNhHc6_BdWoeUKuv3e50rjw&si=0i9IgzCUEU62chmr",
+  url: process.env.NEXT_PUBLIC_DEFAULT_PLAYLIST,
   status: "idle",
   error: null,
 };
@@ -43,7 +43,7 @@ export const loadUserPlaylist = createAsyncThunk(
   "playlist/loadUserPlaylist",
   async (_, thunkAPI) => {
     const { playlist } = thunkAPI.getState() as RootStateType;
-    return await loadPlaylist(playlist.url);
+    return await loadPlaylist(playlist.url!);
   }
 );
 

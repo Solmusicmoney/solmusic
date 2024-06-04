@@ -98,7 +98,9 @@ export const mintSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(trackProgress, (state, action) => {
-        state.progress += 1;
+        if (action.payload.playing) {
+          state.progress += 1;
+        }
       })
       .addCase(mintTokens.pending, (state, action) => {
         state.minting = true;

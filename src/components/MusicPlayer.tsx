@@ -83,7 +83,12 @@ const MusicPlayer = function () {
 
   const handleProgress = (state: OnProgressProps) => {
     //console.log("onProgress", state);
-    dispatch(trackProgress(state));
+    dispatch(
+      trackProgress({
+        playerProgress: state,
+        playing: playerState.reactPlayer.playing,
+      })
+    );
   };
 
   const handleDuration = (duration: TrackType["duration"]) => {

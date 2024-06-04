@@ -47,9 +47,9 @@ function Playlist() {
           />
           <button
             onClick={handleLoadPlaylist}
-            className="w-full p-2 bg-purple-500 text-white mt-3 rounded-lg"
+            className="w-full p-2 bg-purple-600 hover:bg-purple-700 text-white mt-3 rounded-lg"
           >
-            Import
+            Import Playlist
           </button>
         </div>
         <div className="flex flex-col mt-6">

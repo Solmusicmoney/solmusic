@@ -49,6 +49,11 @@ type setCurrentTrackType = {
   index: number;
 };
 
+export type trackProgressType = {
+  playerProgress: OnProgressProps;
+  playing: boolean | undefined;
+};
+
 const playerSlice = createSlice({
   name: "player",
   initialState,
@@ -66,14 +71,17 @@ const playerSlice = createSlice({
     },
     playNextTrack: (state, action: PayloadAction<PlaylistType>) => {
       const { tracks } = action.payload;
+      let newTrackIndex: number;
 
       if (state.trackIndex !== tracks.length - 1) {
-        state.trackIndex += 1;
-        state.currentTrack = tracks[state.trackIndex];
+        newTrackIndex = state.trackIndex + 1;
+        state.currentTrack = tracks[newTrackIndex];
       } else {
-        state.currentTrack = tracks[0];
+        newTrackIndex = 0;
+        state.currentTrack = tracks[newTrackIndex];
       }
 
+      state.trackIndex = newTrackIndex;
       state.reactPlayer = {
         ...state.reactPlayer,
         url: state.currentTrack.url,
@@ -84,14 +92,16 @@ const playerSlice = createSlice({
     },
     playPrevTrack: (state, action: PayloadAction<PlaylistType>) => {
       const { tracks } = action.payload;
+      let newTrackIndex;
 
       if (state.trackIndex !== 0) {
-        state.trackIndex -= 1;
-        state.currentTrack = tracks[state.trackIndex];
+        newTrackIndex = state.trackIndex - 1;
+        state.currentTrack = tracks[newTrackIndex];
       } else {
-        state.currentTrack = tracks[tracks.length - 1];
+        newTrackIndex = tracks.length - 1;
+        state.currentTrack = tracks[newTrackIndex];
       }
-
+      state.trackIndex = newTrackIndex;
       state.reactPlayer = {
         ...state.reactPlayer,
         url: state.currentTrack.url,
@@ -112,11 +122,11 @@ const playerSlice = createSlice({
     seekMouseUp: (state) => {
       state.reactPlayer.seeking = false;
     },
-    trackProgress: (state, action: PayloadAction<OnProgressProps>) => {
+    trackProgress: (state, action: PayloadAction<trackProgressType>) => {
       if (!state.reactPlayer.seeking) {
         state.reactPlayer = {
           ...state.reactPlayer,
-          ...action.payload,
+          ...action.payload.playerProgress,
         };
       }
     },
