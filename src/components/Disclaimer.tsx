@@ -5,7 +5,7 @@ import bkydLogoMark from "@/assets/bkyd/mark.svg";
 function Disclaimer() {
   return (
     <div className="px-4 mt-3 flex flex-col gap-5 items-center">
-      <p className="text-zinc-300 text-sm mb-10 mx-auto max-w-md text-center">
+      <p className="text-zinc-300 text-sm mb-3 mx-auto max-w-md text-center">
         This is just an experimental demo, running on Solana Testnet. No real
         funds is being distributed until we launch.
       </p>
