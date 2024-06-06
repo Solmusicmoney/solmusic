@@ -4,6 +4,7 @@ import Image from "next/image";
 import { RootStateType } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentTrack } from "@/state/player/playerSlice";
+import { shuffleArray } from "./MusicPlayer";
 
 type Props = {};
 function Queue({}: Props) {
