@@ -31,7 +31,7 @@ export type PlayerRef = {
   getPlayerRef: () => ReactPlayer | null;
 };
 
-function shuffleArray(array: any[]) {
+export function shuffleArray(array: any[]) {
   let shuffledArray = array.slice(); // Create a copy of the original array
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1)); // Get a random index

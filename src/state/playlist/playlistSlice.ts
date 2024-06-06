@@ -1,6 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootStateType } from "../store";
 import loadPlaylist from "@/lib/loadPlaylist";
+import { shuffleArray } from "@/components/MusicPlayer";
+import { useDispatch } from "react-redux";
 
 export interface TrackType {
   title: string;
@@ -34,7 +36,7 @@ export interface PlaylistStateType {
 
 const initialState: PlaylistStateType = {
   data: null,
-  url: process.env.NEXT_PUBLIC_DEFAULT_PLAYLIST,
+  url: undefined,
   status: "idle",
   error: null,
 };
@@ -43,7 +45,19 @@ export const loadUserPlaylist = createAsyncThunk(
   "playlist/loadUserPlaylist",
   async (_, thunkAPI) => {
     const { playlist } = thunkAPI.getState() as RootStateType;
-    return await loadPlaylist(playlist.url!);
+
+    let user_playlist = localStorage.getItem("user_playlist");
+    if (user_playlist) {
+      // set playlist url to the on in user-playlist
+      localStorage.setItem("user_playlist", user_playlist);
+      return await loadPlaylist(user_playlist);
+    } else {
+      localStorage.setItem(
+        "user_playlist",
+        process.env.NEXT_PUBLIC_DEFAULT_PLAYLIST!
+      );
+      return await loadPlaylist(localStorage.getItem("user_playlist")!);
+    }
   }
 );
 
@@ -73,6 +87,8 @@ const playlistSlice = createSlice({
       })
       .addCase(loadUserPlaylist.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.data.tracks = shuffleArray(state.data.tracks);
+        state.url = localStorage.getItem("user_playlist")!;
         state.status = "succeeded";
       })
       .addCase(loadUserPlaylist.rejected, (state, action: any) => {

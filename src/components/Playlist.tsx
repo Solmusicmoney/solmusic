@@ -17,6 +17,7 @@ function Playlist() {
   const dispatch = useDispatch<DispatchType>();
 
   const handleLoadPlaylist = async function () {
+    localStorage.setItem("user_playlist", url!);
     dispatch(loadUserPlaylist());
   };
 
