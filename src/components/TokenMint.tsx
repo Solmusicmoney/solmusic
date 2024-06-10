@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootStateType } from "@/state/store";
 import {
+  distributeBonkTokens,
   getOrCreateTokenAccount,
   mintTokens,
   resetMint,
@@ -20,8 +21,9 @@ function TokenMint() {
 
   useEffect(() => {
     if (mintState.progress === mintState.mintInterval) {
-      // reset mint and dispatch tokens
+      // dispatch tokens and reset mint
       dispatch(mintTokens());
+      dispatch(distributeBonkTokens());
       dispatch(resetMint());
     } else {
       const max = mintState.mintInterval;
@@ -40,7 +42,7 @@ function TokenMint() {
     dispatch(setPublicKey(publicKey?.toBase58()));
   }, [dispatch, connection, publicKey]);
 
-  const { data, error, isLoading, isError, isSuccess } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["getAssociatedTokenAddress"],
     queryFn: async function () {
       return await getAssociatedTokenAddress(

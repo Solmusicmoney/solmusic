@@ -17,6 +17,14 @@ export interface MintStateType {
   mintingError: string | undefined;
   publicKey: string | undefined;
   mintAddress: string;
+  bonk: {
+    mintAddress: string;
+    associatedTokenAddress: string | null;
+    bonkBalance: number;
+    creatingTokenAccount: boolean;
+    tokenAccountError: string | undefined;
+    distributing: boolean;
+  };
 }
 
 const initialState: MintStateType = {
@@ -30,6 +38,14 @@ const initialState: MintStateType = {
   mintingError: undefined,
   publicKey: undefined,
   mintAddress: mintAddress.toBase58(),
+  bonk: {
+    mintAddress: process.env.NEXT_PUBLIC_BONK_MINT_ADDRESS!,
+    associatedTokenAddress: null,
+    bonkBalance: 0,
+    creatingTokenAccount: false,
+    tokenAccountError: undefined,
+    distributing: false,
+  },
 };
 
 export const mintTokens = createAsyncThunk(
@@ -42,17 +58,56 @@ export const mintTokens = createAsyncThunk(
       return;
     }
 
-    let response = await fetch("/api/solana/mint-tokens", {
-      method: "POST",
-      body: JSON.stringify({
-        destination: mint.associatedTokenAddress,
-      }),
-    });
+    try {
+      let response = await fetch("/api/solana/mint-tokens", {
+        method: "POST",
+        body: JSON.stringify({
+          destination: mint.associatedTokenAddress,
+        }),
+      });
 
-    return response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(JSON.stringify(err));
+    }
   }
 );
+export const distributeBonkTokens = createAsyncThunk(
+  "mint/distributeBonkTokens",
+  async (_, thunkAPI) => {
+    const { mint } = thunkAPI.getState() as RootStateType;
 
+    if (!connection || !mint.publicKey) {
+      console.log("Wallet not connected");
+      return;
+    }
+
+    try {
+      let response = await fetch("/api/solana/distribute-bonk", {
+        method: "POST",
+        body: JSON.stringify({
+          destination: mint.bonk.associatedTokenAddress,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      thunkAPI.rejectWithValue(JSON.stringify(err));
+    }
+  }
+);
 export const getOrCreateTokenAccount = createAsyncThunk(
   "mint/getOrCreateTokenAccount",
   async (_, thunkAPI) => {
@@ -63,15 +118,56 @@ export const getOrCreateTokenAccount = createAsyncThunk(
       return;
     }
 
-    let response = await fetch("/api/solana/create-token-account", {
-      method: "POST",
-      body: JSON.stringify({
-        associatedTokenAddress: mint.associatedTokenAddress,
-        publicKey: mint.publicKey,
-      }),
-    });
+    try {
+      let response = await fetch("/api/solana/create-token-account", {
+        method: "POST",
+        body: JSON.stringify({
+          associatedTokenAddress: mint.associatedTokenAddress,
+          publicKey: mint.publicKey,
+        }),
+      });
 
-    return response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      thunkAPI.rejectWithValue(JSON.stringify(err));
+    }
+  }
+);
+export const getOrCreateBonkTokenAccount = createAsyncThunk(
+  "mint/getOrCreateBonkTokenAccount",
+  async (_, thunkAPI) => {
+    const { mint } = thunkAPI.getState() as RootStateType;
+
+    if (!connection || !mint.publicKey) {
+      console.log("Wallet not connected");
+      return;
+    }
+
+    try {
+      let response = await fetch("/api/solana/create-bonk-token-account", {
+        method: "POST",
+        body: JSON.stringify({
+          associatedTokenAddress: mint.bonk.associatedTokenAddress,
+          publicKey: mint.publicKey,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
+      }
+    } catch (err) {
+      thunkAPI.rejectWithValue(JSON.stringify(err));
+    }
   }
 );
 
@@ -85,8 +181,14 @@ export const mintSlice = createSlice({
     setTokenAddress: (state, action: PayloadAction<string>) => {
       state.associatedTokenAddress = action.payload;
     },
+    setBonkTokenAddress: (state, action: PayloadAction<string>) => {
+      state.bonk.associatedTokenAddress = action.payload;
+    },
     setTokenBalance: (state, action: PayloadAction<number>) => {
       state.tokenBalance = action.payload;
+    },
+    setBonkBalance: (state, action: PayloadAction<number>) => {
+      state.bonk.bonkBalance = action.payload;
     },
     setPublicKey: (
       state,
@@ -123,11 +225,39 @@ export const mintSlice = createSlice({
       .addCase(getOrCreateTokenAccount.rejected, (state, action) => {
         state.creatingTokenAccount = false;
         state.tokenAccountError = action.error.message;
+      })
+      .addCase(distributeBonkTokens.pending, (state, action) => {
+        state.bonk.distributing = true;
+      })
+      .addCase(distributeBonkTokens.fulfilled, (state, action) => {
+        state.bonk.distributing = false;
+        state.bonk.bonkBalance = action.payload.balance;
+      })
+      .addCase(distributeBonkTokens.rejected, (state, action) => {
+        state.bonk.distributing = false;
+        state.bonk.tokenAccountError = action.error.message;
+      })
+      .addCase(getOrCreateBonkTokenAccount.pending, (state, action) => {
+        state.bonk.creatingTokenAccount = true;
+      })
+      .addCase(getOrCreateBonkTokenAccount.fulfilled, (state, action) => {
+        state.bonk.creatingTokenAccount = false;
+        state.bonk.bonkBalance = action.payload.balance;
+      })
+      .addCase(getOrCreateBonkTokenAccount.rejected, (state, action) => {
+        state.bonk.creatingTokenAccount = false;
+        state.bonk.tokenAccountError = action.error.message;
       });
   },
 });
 
-export const { resetMint, setTokenAddress, setTokenBalance, setPublicKey } =
-  mintSlice.actions;
+export const {
+  resetMint,
+  setTokenAddress,
+  setTokenBalance,
+  setPublicKey,
+  setBonkBalance,
+  setBonkTokenAddress,
+} = mintSlice.actions;
 
 export default mintSlice.reducer;

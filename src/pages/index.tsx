@@ -10,6 +10,7 @@ import ConnectWallet from "@/components/ConnectWallet";
 import Queue from "@/components/Queue";
 import Playlist from "@/components/Playlist";
 import Lyrics from "@/components/Lyrics";
+import BonkBalance from "@/components/BonkBalance";
 
 const Home = function () {
   const [loaded, setLoaded] = useState(false);
@@ -30,6 +31,7 @@ const Home = function () {
               <div className="flex flex-col items-center sm:flex-row gap-6 sm:justify-center mb-16 px-4">
                 <TokenMint />
                 <TokenBalance />
+                <BonkBalance />
               </div>
               <div className="mb-24 flex flex-col sm:flex-row gap-10 md:gap-8 max-w-7xl mx-auto px-4">
                 <Queue />
