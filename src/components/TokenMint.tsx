@@ -70,7 +70,7 @@ function TokenMint() {
         <div id="loader" className="h-full w-1/2 bg-zinc-400"></div>
       </div>
       <p className="text-center text-sm text-zinc-400 mt-3">
-        2 SOLM per minute listening to music
+        2 tokens per minute listening to music
       </p>
     </div>
   );
