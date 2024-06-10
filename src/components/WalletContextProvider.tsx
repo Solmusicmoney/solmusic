@@ -25,7 +25,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     appName: "Solmusic",
   };
   const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
+    () => [new SolflareWalletAdapter(), new PhantomWalletAdapter()],
     []
   );
 
