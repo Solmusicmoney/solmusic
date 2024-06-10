@@ -67,12 +67,14 @@ export const mintTokens = createAsyncThunk(
       });
 
       if (!response.ok) {
-        thunkAPI.rejectWithValue(response.json() || "An error occured");
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
       }
-
-      return response.json();
     } catch (err) {
-      thunkAPI.rejectWithValue(JSON.stringify(err));
+      return thunkAPI.rejectWithValue(JSON.stringify(err));
     }
   }
 );
@@ -95,10 +97,12 @@ export const distributeBonkTokens = createAsyncThunk(
       });
 
       if (!response.ok) {
-        thunkAPI.rejectWithValue(response.json() || "An error occured");
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
       }
-
-      return response.json();
     } catch (err) {
       thunkAPI.rejectWithValue(JSON.stringify(err));
     }
@@ -124,10 +128,12 @@ export const getOrCreateTokenAccount = createAsyncThunk(
       });
 
       if (!response.ok) {
-        thunkAPI.rejectWithValue(response.json() || "An error occured");
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
       }
-
-      return response.json();
     } catch (err) {
       thunkAPI.rejectWithValue(JSON.stringify(err));
     }
@@ -153,10 +159,12 @@ export const getOrCreateBonkTokenAccount = createAsyncThunk(
       });
 
       if (!response.ok) {
-        thunkAPI.rejectWithValue(response.json() || "An error occured");
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData || "An error occurred");
+      } else {
+        const data = await response.json();
+        return data;
       }
-
-      return response.json();
     } catch (err) {
       thunkAPI.rejectWithValue(JSON.stringify(err));
     }
