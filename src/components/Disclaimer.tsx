@@ -6,8 +6,8 @@ function Disclaimer() {
   return (
     <div className="px-4 mt-3 flex flex-col gap-5 items-center">
       <p className="text-zinc-300 text-sm mb-3 mx-auto max-w-md text-center">
-        This is just an experimental demo, running on Solana Testnet. No real
-        funds is being distributed until we launch.
+        {/* This is just an experimental demo, running on Solana Testnet. No real
+        funds is being distributed until we launch. */}
       </p>
       <div className="flex flex-col justify-center">
         <p className="text-zinc-300 text-sm text-center mb-3">

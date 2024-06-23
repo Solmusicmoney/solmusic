@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "socket": "ts-node server.ts"
   },
   "dependencies": {
+    "@huddle01/react": "^2.0.14",
+    "@huddle01/server-sdk": "^2.2.2",
     "@iconify/react": "^4.1.1",
     "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
     "@metaplex-foundation/umi": "^0.9.1",
@@ -26,9 +29,11 @@
     "autoprefixer": "^10.4.19",
     "crypto-hash": "^3.0.0",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "next": "14.2.3",
     "next-redux-wrapper": "^8.1.0",
     "openai": "^4.45.0",
+    "peerjs": "^1.5.4",
     "react": "^18",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
@@ -37,6 +42,7 @@
     "redux": "^5.0.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

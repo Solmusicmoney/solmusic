@@ -8,8 +8,8 @@ import Disclaimer from "./Disclaimer";
 
 const ConnectWallet = function () {
   return (
-    <>
-      <div className="h-[550px] px-4 flex justify-center items-center text-white">
+    <div className="flex flex-col h-screen mt-32">
+      <div className=" px-4 flex justify-center items-center text-white">
         <div className="flex flex-col gap-12">
           <div className="flex justify-center">
             <Image
@@ -78,7 +78,7 @@ const ConnectWallet = function () {
         </div>
       </div>
       <Disclaimer />
-    </>
+    </div>
   );
 };
 
