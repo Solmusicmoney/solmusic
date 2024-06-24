@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useMusicControl } from "./MusicControlContext";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAccessToken,
