@@ -1,14 +1,10 @@
-import { createPeer } from "@/lib/peer";
-import { RootStateType } from "@/state/store";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   usePeerIds,
   useRemoteVideo,
   useRemoteAudio,
-  useRemoteScreenShare,
 } from "@huddle01/react/hooks";
 import { Role } from "@huddle01/server-sdk/auth";
-import { Video, Audio } from "@huddle01/react/components";
 
 const ViewerCameraStream = () => {
   const { peerIds } = usePeerIds({ roles: [Role.HOST] }); // Get Hosts And Cohost's peerIds

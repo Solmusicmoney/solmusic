@@ -1,13 +1,10 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
-import bkydLogo from "@/assets/small-logo.svg";
-import Image from "next/image";
 import WalletContextProvider from "@/components/WalletContextProvider";
 import { Provider } from "react-redux";
 import { store } from "@/state/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { LivestreamProvider } from "@/components/LivestreamContext";
 import { HuddleClient, HuddleProvider } from "@huddle01/react";
 
 const huddleClient = new HuddleClient({

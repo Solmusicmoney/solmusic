@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connection } from "@/lib/solana/connect-to-network";
 import { keypair } from "@/lib/solana/load-env-keypair";
-import { createMintToInstruction, getAccount, mintTo } from "@solana/spl-token";
+import { createMintToInstruction, getAccount } from "@solana/spl-token";
 import {
   PublicKey,
   Transaction,

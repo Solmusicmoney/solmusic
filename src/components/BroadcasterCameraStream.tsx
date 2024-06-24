@@ -1,8 +1,4 @@
-import {
-  useLocalVideo,
-  useLocalAudio,
-  useLocalScreenShare,
-} from "@huddle01/react/hooks";
+import { useLocalVideo, useLocalAudio } from "@huddle01/react/hooks";
 import { Audio, Video } from "@huddle01/react/components";
 
 const BroadcasterCameraStream: React.FC = () => {

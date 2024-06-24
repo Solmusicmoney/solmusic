@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import React, { useEffect } from "react";
 import Image from "next/image";
-import loadPlaylist from "@/lib/loadPlaylist";
 import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootStateType } from "@/state/store";
 import {

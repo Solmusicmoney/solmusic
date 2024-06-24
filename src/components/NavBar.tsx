@@ -1,8 +1,6 @@
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { RootStateType } from "@/state/store";
-import { useDispatch, useSelector } from "react-redux";
 import BroadcasterControls from "./BroadcasterControls";
 import ViewerControls from "./ViewerControls";
 

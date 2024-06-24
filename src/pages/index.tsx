@@ -14,7 +14,6 @@ import BonkBalance from "@/components/BonkBalance";
 import BroadcasterCameraStream from "@/components/BroadcasterCameraStream";
 import { useSelector } from "react-redux";
 import { RootStateType } from "@/state/store";
-import ViewerCameraStream from "@/components/ViewerCameraStream";
 
 const Home = function () {
   const [loaded, setLoaded] = useState(false);

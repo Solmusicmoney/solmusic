@@ -2,7 +2,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootStateType } from "../store";
 import loadPlaylist from "@/lib/loadPlaylist";
 import { shuffleArray } from "@/components/MusicPlayer";
-import { useDispatch } from "react-redux";
 
 export interface TrackType {
   title: string;
