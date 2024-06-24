@@ -1,7 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createTokenMint } from "@/lib/solana/create-token-mint";
-import { getExplorerLink } from "@solana-developers/helpers";
-import { updateTokenMetadata } from "@solana/spl-token";
 import { uploadMetadataForToken } from "@/lib/solana/umi-token-metadata";
 
 export default async function handler(

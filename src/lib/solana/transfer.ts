@@ -7,7 +7,6 @@ import {
 import { keypair } from "./load-env-keypair";
 import { connection } from "./connect-to-network";
 import { checkAccountExistence } from "./check-account-existence";
-import { createNewAccount } from "./create-account";
 
 async function transfer(pubkey: PublicKey, lamports: number) {
   if (!pubkey) {

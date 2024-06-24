@@ -1,5 +1,4 @@
 import { PublicKey } from "@solana/web3.js";
-import { sha256 } from "crypto-hash";
 
 function isValidSolanaPublicKey(publicKeyStr: string | PublicKey): boolean {
   try {

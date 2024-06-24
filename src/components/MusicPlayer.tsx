@@ -3,7 +3,6 @@ import ReactPlayer from "react-player";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from "next/image";
 
-import logo from "@/assets/logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateType } from "@/state/store";
 import {

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import React from "react";
 import Image from "next/image";
 import { RootStateType } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentTrack } from "@/state/player/playerSlice";
-import { shuffleArray } from "./MusicPlayer";
 
 type Props = {};
 function Queue({}: Props) {

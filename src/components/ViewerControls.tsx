@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAccessToken,
@@ -7,8 +7,7 @@ import {
 } from "@/state/livestream/livestreamSlice";
 import { DispatchType, RootStateType } from "@/state/store";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { usePeerIds, useRoom } from "@huddle01/react/hooks";
-import { Role } from "@huddle01/server-sdk/auth";
+import { useRoom } from "@huddle01/react/hooks";
 
 type Props = {
   roomId: string | string[] | undefined;

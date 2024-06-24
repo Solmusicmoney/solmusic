@@ -1,8 +1,5 @@
-import NavBar from "@/components/NavBar";
 import Image from "next/image";
-import googleLogo from "@/assets/google-logo.png";
 import logo from "@/assets/mark.svg";
-import mark from "@/assets/mark-yellow.svg";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Disclaimer from "./Disclaimer";
 
