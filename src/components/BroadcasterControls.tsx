@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLivestream } from "./LivestreamContext";
-import { createPeer, getPeerId } from "../lib/peer";
 import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootStateType } from "@/state/store";
 import { createLiveStream, stopLive } from "@/state/livestream/livestreamSlice";
@@ -16,6 +14,9 @@ const BroadcasterControls = () => {
     },
     onLeave: () => {
       console.log("Left the room");
+    },
+    onPeerJoin: (peer) => {
+      console.log("onPeerJoin", peer);
     },
   });
 
