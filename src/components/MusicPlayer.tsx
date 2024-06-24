@@ -43,6 +43,9 @@ export function shuffleArray(array: any[]) {
 const MusicPlayer = function () {
   const playlistState = useSelector((state: RootStateType) => state.playlist);
   const playerState = useSelector((state: RootStateType) => state.player);
+  const livestreamState = useSelector(
+    (state: RootStateType) => state.livestream
+  );
 
   const dispatch = useDispatch();
   const playerRef = useRef<ReactPlayer>(null);
@@ -174,14 +177,22 @@ const MusicPlayer = function () {
                 <div>
                   <div
                     id="scrollTrigger"
-                    className="w-64 h-64 mx-auto mb-8 relative flex flex-col gap-8 items-center justify-center"
+                    className={` ${
+                      livestreamState.broadcaster.live
+                        ? "w-56 h-56 mt-4"
+                        : "w-64 h-64"
+                    } mx-auto mb-10 relative flex flex-col gap-8 items-center justify-center`}
                   >
                     <Image
                       src={playerState.currentTrack?.thumbnail}
                       width={2000}
                       height={2000}
                       alt={playerState.currentTrack?.title}
-                      className="absolute top-0 left-0 object-cover w-64 h-64 block mx-auto rounded-lg animate__animated animate__zoomIn"
+                      className={`absolute top-0 left-0 object-cover ${
+                        livestreamState.broadcaster.live
+                          ? "w-56 h-56 mt-4"
+                          : "w-64 h-64"
+                      } block mx-auto rounded-lg animate__animated animate__zoomIn`}
                     />
                   </div>
                   <div className="animate__animated animate__fadeInUp">

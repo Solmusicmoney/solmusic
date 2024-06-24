@@ -11,13 +11,6 @@ import {
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 require("@solana/wallet-adapter-react-ui/styles.css");
-import {
-  SolanaMobileWalletAdapter,
-  createDefaultAddressSelector,
-  createDefaultAuthorizationResultCache,
-  createDefaultWalletNotFoundHandler,
-} from "@solana-mobile/wallet-adapter-mobile";
-import { isMobile } from "react-device-detect";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const network = clusterApiUrl(process.env.NEXT_PUBLIC_CLUSTER as Cluster);

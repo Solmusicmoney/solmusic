@@ -7,6 +7,18 @@ import WalletContextProvider from "@/components/WalletContextProvider";
 import { Provider } from "react-redux";
 import { store } from "@/state/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LivestreamProvider } from "@/components/LivestreamContext";
+import { HuddleClient, HuddleProvider } from "@huddle01/react";
+
+const huddleClient = new HuddleClient({
+  projectId: process.env.NEXT_PUBLIC_HUDDLE01_PROJECT_ID!,
+  options: {
+    // `activeSpeakers` will be most active `n` number of peers, by default it's 8
+    activeSpeakers: {
+      size: 1,
+    },
+  },
+});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,9 +34,13 @@ export default function App({
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <WalletContextProvider>
-          <main className={`${inter.className} relative`}>
-            <Component {...pageProps} />
-          </main>
+          {/* <LivestreamProvider>
+          </LivestreamProvider> */}
+          <HuddleProvider client={huddleClient}>
+            <main className={`${inter.className} relative`}>
+              <Component {...pageProps} />
+            </main>
+          </HuddleProvider>
         </WalletContextProvider>
       </QueryClientProvider>
     </Provider>
