@@ -1,7 +1,3 @@
-import { RootStateType } from "@/state/store";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLivestream } from "./LivestreamContext";
 import {
   useLocalVideo,
   useLocalAudio,
