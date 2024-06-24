@@ -8,9 +8,7 @@ import {
   TokenInvalidMintError,
   TokenInvalidOwnerError,
   createAssociatedTokenAccountInstruction,
-  createMintToInstruction,
   getAccount,
-  mintTo,
 } from "@solana/spl-token";
 import {
   LAMPORTS_PER_SOL,

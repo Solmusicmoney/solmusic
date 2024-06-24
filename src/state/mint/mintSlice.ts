@@ -1,9 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { trackProgress } from "../player/playerSlice";
-import { Connection, PublicKey } from "@solana/web3.js";
 import { RootStateType } from "../store";
 import { mint as mintAddress } from "@/lib/solana/load-env-mint";
-import { useConnection } from "@solana/wallet-adapter-react";
 import { connection } from "@/lib/solana/connect-to-network";
 
 export interface MintStateType {

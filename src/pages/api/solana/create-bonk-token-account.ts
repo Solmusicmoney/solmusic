@@ -7,14 +7,10 @@ import {
   TokenInvalidMintError,
   TokenInvalidOwnerError,
   createAssociatedTokenAccountInstruction,
-  createMintToInstruction,
   getAccount,
-  mintTo,
 } from "@solana/spl-token";
 import {
-  Cluster,
   Connection,
-  LAMPORTS_PER_SOL,
   PublicKey,
   Transaction,
   clusterApiUrl,

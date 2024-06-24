@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootStateType } from "@/state/store";
 import { createLiveStream, stopLive } from "@/state/livestream/livestreamSlice";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useLocalPeer, useRoom } from "@huddle01/react/hooks";
+import { useRoom } from "@huddle01/react/hooks";
 import { useLocalVideo, useLocalAudio } from "@huddle01/react/hooks";
 
 const BroadcasterControls = () => {
